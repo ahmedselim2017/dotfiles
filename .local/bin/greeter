@@ -1,0 +1,50 @@
+#!/bin/sh
+
+toilet --font future --metal "Wake Up, $USER"
+
+kernel=$(uname -sr)
+uptime=$(uptime --pretty | cut -d' ' -f 2-7)
+
+wifi=$(nmcli -t -f name connection show --active | grep -v 'wg0\|docker')
+wireguard=$(nmcli -t -f name connection show --active | grep 'wg0')
+
+[ "$wifi" ] && wifi="\e[32m$wifi\e[39m" || wifi="\e[31mDOWN\e[39m"
+[ "$wireguard" ] && wireguard="\e[32m$wireguard\e[39m" || wireguard="\e[31mDOWN\e[39m"
+
+disks=$(df -h --output=source,target,size,used,pcent | grep sda | fmt -su)
+
+
+printf "\e[34m┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\e[39m
+\e[34m┃\e[39m Knock, knock, \e[36m$USER\e[39m. %54s\e[34m┃\e[39m
+\e[34m┃\e[39m Kernel: %-20b\t\tUptime...: %-30b \e[34m┃\e[39m
+\e[34m┃\e[39m Wifi..: %-30b\t\tWireguard: %-40b \e[34m┃\e[39m
+\e[34m┃\e[39m Disks: %72s \e[34m┃\e[39m" " " "$kernel"  "$uptime" "$wifi" "$wireguard" " "
+
+echo
+
+while read line;
+do
+    diskname=$(cut -d' ' -f1 <<< $line)
+    disktarget=$(cut -d' ' -f2 <<< $line)
+    disksize=$(cut -d' ' -f3 <<< $line)
+    diskusage=$(cut -d' ' -f4 <<< $line)
+    diskpcentusage=$(cut -d' ' -f5 <<< $line | cut -d'%' -f1)
+
+    diskpcentusage=$(( "$diskpcentusage / 2" ))
+
+    bar=""
+    i=0;while [ "$i" -ne 50 ]
+    do
+        [ $i -le $diskpcentusage ] && bar="$bar\e[31m━" || bar="$bar\e[32m━"
+        i=$((i+1))
+    done
+
+    bar="$bar\e[39m"
+
+
+    printf "\e[34m┃\e[39m %7s→%-5s %52b% 4s/%-5s%-4s\e[34m┃\e[39m\n" "$diskname" "$disktarget" "$bar" "$diskusage" "$disksize" "$diskpcentusage%"
+
+done <<< $disks
+
+
+echo -e "\e[34m┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\e[39m"

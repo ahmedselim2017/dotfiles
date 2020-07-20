@@ -1,0 +1,70 @@
+#!/bin/sh
+
+action=$(echo -e "android\nmount\nunmount" | dmenu -i -p "Hangisi?")
+
+if [[ "$action" == "mount" ]];then
+
+    mountable=$(lsblk -lp | grep -v "/dev/sda" | grep "part $\|disk $" | awk '{print $1 " ("$4" / "$6")"}')
+    [[ "$mountable" = "" ]] && exit 1
+
+    choosen=$(echo "$mountable" | dmenu -i -p 'Hangi Diski Bağla?' | awk '{print $1}')
+    [[ "$choosen" = "" ]] && exit 1
+    sudo mount $choosen && exit 0
+
+    dirs=$(find /mnt /media /mount /home -type d -maxdepth 3 2>/dev/null | tail -n +2)
+    mountpoint=$(echo "$dirs" | dmenu -i -p 'Diski Nereye Bağla?' )
+    [[ "$mountpoint" = "" ]] && exit 1
+
+    if [[ ! -d "$mountpoint" ]]; then
+        while [ true ]; do
+            shouldmkdir=$(echo -e 'Evet\nHayır' | dmenu -i -p 'Böyle birşey yok. Oluştur?' )
+            [[ "$shouldmkdir" = "Hayır" ]] && exit 0
+            mkdir -p "~/$mountpoint" && break
+            shouldretry=$(echo -e 'Evet\nHayır' | dmenu -i -p 'Oluşturma Başarısız Oldu. Yeniden Dene?')
+            [[ "$shouldretry" == "Hayır" ]] && exit 0
+        done
+    fi
+
+    sudo mount $choosen $mountpoint && notify-send "Cihaz Bağantısı Başarılı" "$choosen --> $mountpoint" && exit 0
+
+elif [[ "$action" == "android" ]];then
+    mountable=$(simple-mtpfs -l)
+    [[ "$mountable" == "" ]] && exit 1
+
+    choosen=$(echo "$mountable" | dmenu -i -p 'Hangi Diski Bağla?' | grep -Go "^[1-9]")
+    [[ "$choosen" = "" ]] && exit 1
+
+    dirs=$(find /mnt /media /mount /home -type d -maxdepth 3 2>/dev/null | tail -n +2)
+    mountpoint=$(echo "$dirs" | dmenu -i -p 'Diski Nereye Bağla?' )
+    [[ "$mountpoint" = "" ]] && exit 1
+
+    if [[ ! -d "$mountpoint" ]]; then
+        while [ true ]; do
+            shouldmkdir=$(echo -e 'Evet\nHayır' | dmenu -i -p 'Böyle birşey yok. Oluştur?' )
+            [[ "$shouldmkdir" = "Hayır" ]] && exit 0
+            mkdir -p "$mountpoint" && break
+            shouldretry=$(echo -e 'Evet\nHayır' | dmenu -i -p 'Oluşturma Başarısız Oldu. Yeniden Dene?')
+            [[ "$shouldretry" == "Hayır" ]] && exit 0
+        done
+    fi
+
+    simple-mtpfs --device $choosen $mountpoint && notify-send "Cihaz Bağlantısı Başarılı" "$choosen --> $mountpoint"  && exit 0
+    notify-send "Cihaz Bağlantısı Başarısız" "Cihazın ekranın açık olduğunu ve bağlantı izni verildiğinden emin olup tekrar deneyin" && exit 1
+
+else
+
+    unmountable=$(lsblk -lp | grep -v "part $\|disk $\|/dev/sda\|NAME" | awk '{print $1 " ("$4" / "$6")"}')
+    [[ "$unmountable" = "" ]] && exit 0
+    choosen=$(echo "$unmountable" | dmenu -i -p 'Hangi Diski Çıkar?' | awk '{print $1}')
+
+    [[ "$choosen" = "" ]] && exit 0
+    isbusy=$(sudo umount $choosen 2>&1 && notify-send "Bağlantı Kesildi" "$choosen diskinin bağlantısı kesildi")
+
+    [[ "$isbusy" = "" ]] && exit 0
+    shouldforce=$(printf "Hayır\nEvet" | dmenu -i -p 'Disk şuanda meşgul. Yinede çıkar?')
+
+    [[ "$shouldforce" != "Evet" ]] && exit 0
+    sudo umount -l $choosen && notify-send "Bağlantı Kesildi"  "$choosen diskinin bağlantısı kesildi" && exit 0
+
+fi
+
