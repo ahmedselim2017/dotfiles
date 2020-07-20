@@ -1,0 +1,432 @@
+#██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+#██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+#██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+#██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+#██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+#╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+
+[global/wm]
+;https://github.com/jaagr/polybar/wiki/Configuration#global-wm-settings
+margin-top = 0
+margin-bottom = 0
+
+[settings]
+;https://github.com/jaagr/polybar/wiki/Configuration#application-settings
+throttle-output = 5
+throttle-output-for = 10
+throttle-input-for = 30
+screenchange-reload = true
+compositing-background = over
+compositing-foreground = over
+compositing-overline = over
+compositing-underline = over
+compositing-border = over
+
+; Define fallback values used by all module formats
+format-foreground = #FF0000
+format-background = #00FF00
+format-underline =
+format-overline =
+format-spacing =
+format-padding =
+format-margin =
+format-offset =
+
+[colors]
+background = #af282A36
+foreground = ${xrdb:color7:#222}
+
+black = ${xrdb:color0:#222}
+red = ${xrdb:color1:#222}
+green = ${xrdb:color2:#222}
+yellow = ${xrdb:color3:#222}
+blue = ${xrdb:color4:#222}
+magenta = ${xrdb:color5:#122}
+cyan = ${xrdb:color6:#222}
+white = ${xrdb:color7:#222}
+
+# Bar/i3
+[bar/mainbar-i3]
+;https://github.com/jaagr/polybar/wiki/Configuration
+
+;monitor-fallback = HDMI1
+monitor-strict = false
+override-redirect = true
+bottom = false
+fixed-center = true
+height = 20
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 2
+line-color = #000000
+
+border-size = 0
+;border-left-size = 25
+;border-right-size = 25
+;border-top-size = 0
+;border-bottom-size = 25
+border-color = #000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 2
+module-margin-right = 2
+
+;https://github.com/jaagr/polybar/wiki/Fonts
+font-0 = "UbuntuMono Nerd Font:size=10;2"
+font-1 = "UbuntuMono Nerd Font:size=16;3"
+font-2 = "Font Awesome 5 Free:style=Regular:pixelsize=8;1"
+font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=8;1"
+font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
+font-5 = "Symbola:size=13;3"
+
+modules-left = i3
+modules-center = cmus
+modules-right =backlight pulseaudio battery date
+separator = %{F#44475a}|%{F-}
+
+;dim-value = 1.0
+
+#i3: Make the bar appear below windows
+wm-restack = i3
+;override-redirect = true
+
+; Enable support for inter-process messaging
+; See the Messaging wiki page for more details.
+enable-ipc = true
+
+; Fallback click handlers that will be called if
+; there's no matching module handler found.
+click-left =
+click-middle =
+click-right =
+scroll-up =
+scroll-down =
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+double-click-left =
+double-click-middle =
+double-click-right =
+
+; Requires polybar to be built with xcursor support (xcb-util-cursor)
+; Possible values are:
+; - default   : The default pointer as before, can also be an empty string (default)
+; - pointer   : Typically in the form of a hand
+; - ns-resize : Up and down arrows, can be used to indicate scrolling
+cursor-click =
+cursor-scroll =
+
+[bar/systray]
+# As small as possible, polybar will resize it when items get added
+width = 1
+
+# Whatever fits your needs
+height = 40
+
+# Bottom left to imitate gnome-shells systray
+bottom = true
+radius = 10
+
+# REQUIRED for us to be able to move the window
+override-redirect = true
+
+modules-right = placeholder
+
+tray-position = left
+tray-maxsize = 16
+tray-padding = 8
+tray-transparent = false
+tray-background = ${colors.background}
+
+[module/placeholder]
+# Just a dummy module as polybar always requires at least one amodule
+type = custom/script
+width = 1
+
+
+###########################################################
+######################### Modules #########################
+###########################################################
+
+[module/i3]
+;https://github.com/jaagr/polybar/wiki/Module:-i3
+type = internal/i3
+
+enable-scroll = false
+wrapping-scroll = false
+reverse-scroll = false
+
+format = <label-state> <label-mode>
+label-mode = %mode%
+label-mode-padding = 2
+label-mode-foreground = #000000
+label-mode-background = #FFBB00
+
+label-focused = %name%
+label-focused-background = ${colors.background}
+label-focused-foreground = ${colors.blue}
+label-focused-padding = 2
+
+label-unfocused =  %name%
+label-unfocused-padding = 2
+label-unfocused-background = ${colors.background}
+label-unfocused-foreground = ${colors.foreground}
+label-unfocused-underline =
+
+label-visible =  %name%
+label-visible-background = ${self.label-focused-background}
+label-visible-padding = 2
+
+label-urgent =  %name%
+label-urgent-background = ${self.label-focused-background}
+label-urgent-foreground = ${colors.red}
+label-urgent-padding = 2
+
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+
+[module/backlight]
+;https://github.com/jaagr/polybar/wiki/Module:-backlight
+
+type = internal/backlight
+
+; Use the following command to list available cards:
+; $ ls -1 /sys/class/backlight/
+card = intel_backlight
+
+; Available tags:
+;   <label> (default)
+;   <ramp>
+;   <bar>
+format = "<ramp> <label>"
+
+label = %percentage%%
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+ramp-0 = 🌕
+ramp-1 = 🌔
+ramp-2 = 🌓
+ramp-3 = 🌒
+ramp-4 = 🌑
+
+ramp-0-foreground = ${colors.blue}
+ramp-1-foreground = ${colors.blue}
+ramp-2-foreground = ${colors.blue}
+ramp-3-foreground = ${colors.yellow}
+ramp-4-foreground = ${colors.yellow}
+
+
+
+################################################################################
+
+[module/battery]
+;https://github.com/jaagr/polybar/wiki/Module:-battery
+type = internal/battery
+battery = BAT0
+adapter = AC0
+full-at = 100
+
+format-charging = <animation-charging> <label-charging>
+label-charging =  %percentage%%
+format-charging-foreground = ${colors.foreground}
+format-charging-background = ${colors.background}
+
+format-discharging = <ramp-capacity> <label-discharging>
+label-discharging =  %percentage%%
+format-discharging-foreground = ${colors.foreground}
+format-discharging-background = ${colors.background}
+
+format-full-prefix = ""
+format-full-prefix-foreground = ${colors.green}
+format-full-prefix-background = ${colors.background}
+format-full-foreground = ${colors.green}
+format-full-background = ${colors.background}
+format-foreground = ${colors.foreground}
+format-background = ${colors.foreground}
+
+ramp-capacity-0 = "  "
+ramp-capacity-1 = "  "
+ramp-capacity-2 = "  "
+ramp-capacity-3 = "  "
+ramp-capacity-4 = "  "
+ramp-capacity-foreground = ${colors.yellow}
+
+animation-charging-0 = "  " 
+animation-charging-1 = "  " 
+animation-charging-2 = "  "
+animation-charging-3 = "  "
+animation-charging-4 = "  "
+animation-charging-foreground = ${colors.green}
+animation-charging-framerate = 750
+
+################################################################################
+
+[module/cmus]
+type = custom/script
+
+exec = $HOME/.config/polybar/scripts/cmus.sh
+exec-if = pgrep -x cmus
+interval = 1
+
+click-left = cmus-remote --pause
+scroll-up = cmus-remote --volume +5%
+scroll-down = cmus-remote --volume -5%
+
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+format-prefix = "  "
+format = <label>
+format-prefix-foreground = ${colors.cyan}
+
+label = %output%
+label-maxlen = 150
+
+################################################################################
+
+[module/corona]
+type = custom/script
+exec = ~/dotfiles-scripts/scripts/corona
+interval = 10800
+format-background = ${colors.red}
+format-foreground = ${colors.background}
+
+################################################################################
+
+[module/oruc]
+type = custom/script
+exec = ~/just4fun/oruc/main.py
+interval = 10800
+format-background = ${colors.blue}
+format-foreground = ${colors.background}
+
+################################################################################
+
+[module/date]
+;https://github.com/jaagr/polybar/wiki/Module:-date
+type = internal/date
+; Seconds to sleep between updates
+interval = 5
+; See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+date = " %a %b %d, %Y"
+date-alt = " %a %b %d, %Y"
+time = %l:%M%p
+time-alt = %l:%M%p
+format-prefix = " "
+format-prefix-foreground = ${colors.blue}
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+label = "%date% %time%"
+
+
+
+################################################################################
+
+[module/networkspeedup]
+;https://github.com/jaagr/polybar/wiki/Module:-network
+type = internal/network
+;interface = wlp3s0
+;interface = enp14s0
+;interface = enp0s31f6
+interface = wlp3s0
+label-connected = "%upspeed:7%"
+format-connected = <label-connected>
+format-connected-prefix = " "
+format-connected-prefix-foreground = #292d3e
+format-connected-foreground = #292d3e
+format-connected-background = #C3E88D
+
+################################################################################
+
+[module/networkspeeddown]
+;https://github.com/jaagr/polybar/wiki/Module:-network
+type = internal/network
+;interface = wlp3s0
+;interface = enp14s0
+;interface = enp0s31f6
+interface = wlp3s0
+label-connected = "%downspeed:7%"
+format-connected = <label-connected>
+format-connected-prefix = "  "
+format-connected-prefix-foreground = #292d3e
+format-connected-foreground = #292d3e
+format-connected-background = #C3E88D
+
+################################################################################
+
+[module/pacman-updates]
+type = custom/script
+;exec = pacman -Qu | wc -l
+exec = checkupdates | wc -l
+interval = 1000
+label = Repo: %output%
+format-foreground = ${colors.background}
+format-background = ${colors.yellow}
+format-prefix = " "
+format-prefix-foreground = ${colors.background}
+
+
+################################################################################
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+sink = alsa_output.pci-0000_12_00.3.analog-stereo
+
+use-ui-max = false
+
+interval = 2
+format-volume = <ramp-volume> <label-volume>
+
+ramp-volume-0 = 🔈
+ramp-volume-1 = 🔉
+ramp-volume-2 = 🔊
+ramp-volume-0-foreground = ${colors.blue}
+ramp-volume-1-foreground = ${colors.green}
+ramp-volume-2-foreground = ${colors.yellow}
+ramp-volume-background = ${colors.background}
+
+
+format-muted = <label-muted>
+
+label-volume = "%percentage%%"
+label-volume-foreground = ${colors.foreground}
+label-volume-background = ${colors.background}
+
+label-muted = 🔇 muted
+label-muted-foreground = ${colors.red}
+label-muted-background = ${colors.background}
+
+
+################################################################################
+
+[module/sep]
+; alternative separator
+type = custom/text
+content = 
+content-foreground = ${colors.foreground}
+content-background =  ${colors.background}
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+################################################################################
+
+[module/uptime]
+;https://github.com/jaagr/polybar/wiki/User-contributed-modules#uptime
+type = custom/script
+exec = uptime | awk -F, '{sub(".*up ",x,$1);print $1}'
+interval = 100
+label = Uptime : %output%
+
+format-foreground = ${colors.background}
+format-background = ${colors.yellow}
+format-prefix = " "
+format-prefix-foreground = ${colors.background}
+
+
