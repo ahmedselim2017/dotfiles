@@ -245,7 +245,6 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
 
 exec ~/.config/polybar/launch.sh
-exec ~/dotfiles-scripts/scripts/reload_dunst.sh
 exec redshift -r
 exec clipmenud 
 exec compton
@@ -266,13 +265,12 @@ for_window [instance="shell"] move scratchpad
 for_window [instance="shell"] border pixel 0
 exec --no-startup-id termite --name shell -e zsh
 
-exec_always "~/dotfiles-scripts/scripts/setbg ~/Pictures/Wallpapers/theme_specific/dracula && setxkbmap tr"
+exec_always "~/.local/bin/setbg ~/Pictures/Wallpapers/theme_specific/dracula && setxkbmap tr"
 
 bindsym $mod+t [instance="shell"] scratchpad show; [instance="shell"] move position center
 
 bindsym $mod+Shift+p exec passmenu
 
-bindsym $mod+s exec /home/tozkoparan/dotfiles-scripts/scripts/dsearch
 bindsym $mod+shift+s exec import -window root "/home/tozkoparan/sc/$(date +%F_%T).png" && notify-send "Ekran görüntüsü alındı"
 
 for_window [urgent="latest"] focus
