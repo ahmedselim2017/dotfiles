@@ -9,6 +9,7 @@
 - zsh
 - dunst
 - cmus
+- zathura
 
 ## Scripts for:
 - dmount - Mounting and unmounting disks using
