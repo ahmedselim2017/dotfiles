@@ -20,10 +20,9 @@ bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
-
-# start dmenu
-#bindsym $mod+d exec --no-startup-id $(dmenu_path | dmenu -i -p "Run:" -h 20)
-bindsym $mod+d exec $(~/.local/bin/dmenu_run_i -p "Run: " -h 21)
+# start dmenu 
+bindsym $mod+d exec --no-startup-id $(dmenu_path | dmenu -i -p "Run:" )
+#bindsym $mod+d exec $(~/.local/bin/dmenu_run_i -p "Run: " -h 21)
 bindsym $mod+c exec clipmenu -p "Clipboard: " -h 20
 
 # change focus
@@ -118,8 +117,8 @@ for_window [title="MuseScore: Play Panel"] floating enable
 for_window [class="Oblogout"] fullscreen enable
 for_window [class="octopi"] floating enable
 for_window [class="Pavucontrol"] floating enable
-for_window [class="qt5ct"] floating enable sticky enable border normal
-for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
+#for_window [class="qt5ct"] floating enable sticky enable border normal
+#for_window [class="Qtconfig-qt4"] floating enable sticky enable border normal
 for_window [class="Simple-scan"] floating enable border normal
 for_window [class="(?i)System-config-printer.py"] floating enable border normal
 for_window [class="Skype"] floating enable border normal
@@ -138,7 +137,6 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-
 # Resize window
 bindsym $mod+Shift+y resize grow width 5 px or 5 ppt
 bindsym $mod+Shift+u resize shrink height 5 px or 5 ppt
@@ -146,21 +144,19 @@ bindcode $mod+Shift+31 resize grow height 5 px or 5 ppt
 bindsym $mod+Shift+o resize shrink width 5 px or 5 ppt
 
 # Lock screen
-# bindsym $mod+shift+x exec ~/git-clones/betterlockscreen/betterlockscreen -l glitch & ~/git-clones/betterlockscreen/betterlockscreen -u ~/Pictures/Wallpapers
-bindsym $mod+shift+x exec "i3lock -k --pass-screen-keys --pass-media-keys --insidevercolor=#282936 --insidewrongcolor=282936 --insidecolor=#282936 --ringvercolor=#00f769 --ringwrongcolor=#ea51b2 --ringcolor=#62d6e8 --line-uses-inside --keyhlcolor=#00f769 --bshlcolor=#ea51b2 --separatorcolor=#282936 --verifcolor=#e9e9f4 --wrongcolor=#e9e9f4 --layoutcolor=#e9e9f4 --timecolor=#e9e9f4 --datecolor=#e9e9f4 --ring-width=5 --radius=100 --color=#000000 --blur=6"
+bindsym $mod+shift+x exec "betterlockscreen -l dim"
 
 # Autostart applications
 exec --no-startup-id nm-applet
 
-# class                 border  bground text    indicator child_border
-client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
-client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
-client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
-client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
-client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+set_from_resource $fg foreground
+set_from_resource $bg background
+set_from_resource $fbg color8
 
-client.background       #F8F8F2
-
+client.focused          $fbg $fbg $fbg $fbg
+client.focused_inactive $bg $bg $bg $bg
+client.unfocused        $bg $bg $bg $bg
+client.urgent           $bg $bg $bg $bg
 
 #############################
 ### settings for i3-gaps: ###
@@ -170,6 +166,7 @@ client.background       #F8F8F2
 gaps inner 5
 gaps outer 2
 gaps top 30
+border_radius 10
 
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
@@ -235,19 +232,23 @@ bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
-# Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -D pulse sset Master 5%+ #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -D pulse sset Master 5%- #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id amixer sset Master toggle # mute sound
+# bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -c 1 sset Master 5%+ #increase sound volume
+# bindsym XF86AudioLowerVolume exec --no-startup-id amixer -c 1 sset Master 5%- #decrease sound volume
+# bindsym XF86AudioMute exec --no-startup-id amixer -c 1 sset Master toggle # mute sound
 
-# Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
 
-exec ~/.config/polybar/launch.sh
-exec redshift -r
-exec clipmenud 
-exec compton
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume alsa_output.pci-0000_00_1b.0.analog-stereo -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo toggle
+
+bindsym XF86MonBrightnessUp exec light -A 5
+bindsym XF86MonBrightnessDown exec light -U 5
+
+exec --no-startup-id ~/.config/polybar/launch.sh
+exec --no-startup-id redshift -r
+exec --no-startup-id clipmenud 
+exec --no-startup-id picom --experimental-backends
+exec --no-startup-id dunst
 
 bindsym XF86PowerOff exec urxvt
 
@@ -255,7 +256,7 @@ for_window [instance="pythondrop"] floating enable
 for_window [instance="pythondrop"] resize set 725 300
 for_window [instance="pythondrop"] move scratchpad
 for_window [instance="pythondrop"] border pixel 0
-exec --no-startup-id termite --name pythondrop -e /home/tozkoparan/miniconda3/bin/ipython
+exec --no-startup-id termite --name pythondrop -e ipython
 
 bindsym $mod+p [instance="pythondrop"] scratchpad show; [instance="pythondrop"] move position center
 

@@ -1,10 +1,13 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export EDITOR="/usr/bin/nvim"
-export SUDO_EDITOR="/usr/bin/nvim"
-export SUDO_ASKPASS="/usr/bin/dmenu_pass"
-export PAGER="less"
-export BROWSER="brave"
+. $HOME/.profile
+# export EDITOR="/usr/bin/nvim"
+# export SUDO_EDITOR="/usr/bin/nvim"
+# export SUDO_ASKPASS="/usr/bin/dmenu_pass"
+# export PAGER="less"
+# export BROWSER="brave"
+# export LC_ALL=en_US.UTF-8
+# export LANG=en_US.UTF-8
+# export LANGUAGE=en_US.UTF-8
+# export QT_QPA_PLATFORMTHEME="qt5ct"
 
 HIST_STAMPS="dd/mm/yyyy"
 HISTFILE="$HOME/.zsh_history"
@@ -31,7 +34,7 @@ alias resetZSHSource="source ~/.zshrc"
 # Some Commands
 alias cl="command clear"
 alias cls="command clear; ls"
-alias csl="curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash"
+alias csl="command clear; ls"
 alias rf="rm -rf"
 alias s="sudo "
 alias mkd='mkdir -pv'
@@ -61,6 +64,7 @@ alias lofi="mpv 'https://www.youtube.com/watch?v=5qap5aO4i9A' --no-video"
 alias drag="dragon-drag-and-drop -x"
 alias dragt="dragon-drag-and-drop -x -t"
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias mv='mv -i'
 
 # Git
 alias g="git"
@@ -72,8 +76,8 @@ alias gc="git commit -m"
 alias gca="git commit -am"
 
 # Youtube-dl
-alias ymp="youtube-dl --restrict-filenames -if bestaudio --extract-audio --audio-format mp3 -o '%(playlist_index)s-%(title)s.%(ext)s'"
-alias yp="youtube-dl --restrict-filenames -io '%(playlist_index)s-%(title)s/%(title)s.%(ext)s' -i --sub-lang=en,tr"
+alias ymp="youtube-dl -if bestaudio --extract-audio --audio-format mp3 -o '%(playlist_index)s-%(title)s.%(ext)s'"
+alias yp="youtube-dl -io '%(playlist_index)s-%(title)s/%(title)s.%(ext)s' -i --sub-lang=en,tr"
 alias y="youtube-dl"
 
 # nvim
@@ -93,7 +97,6 @@ function mkc (){mkdir -v $1 && cd $1}
 
 export TERM='xterm-256color'
 
-PATH="/home/$USER/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/home/$USER/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/home/$USER/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
 PERL_MB_OPT="--install_base \"/home/$USER/perl5\""; export PERL_MB_OPT;
@@ -161,8 +164,6 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-export PATH="/home/tozkoparan/.local/bin:/home/tozkoparan/dotfiles-scripts/scripts:$PATH"
-export PATH="$PATH:$HOME/go/bin":"/home/tozkoparan/.cargo/bin"
 greeter
 
 
@@ -172,6 +173,29 @@ source "/home/$USER/.config/zsh/fast-syntax-highlighting/fast-syntax-highlightin
 source "/home/$USER/.config/zsh/z/z.sh"
 
 function c(){cd $(find -type d | fzf --tac --preview="tree -C -L 2 -x --noreport --dirsfirst {} | head -$LINES")}
+
+# Setup extract alias
+x () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1 ;;
+      *.tar.gz)    tar xzf $1 ;;
+      *.bz2)       bunzip2 $1 ;;
+      *.rar)       rar x $1 ;;
+      *.gz)        gunzip $1 ;;
+      *.tar)       tar xvf $1 ;;
+      *.tbz2)      tar xjf $1 ;;
+      *.tgz)       tar xzf $1 ;;
+      *.zip)       unzip $1 ;;
+      *.Z)         uncompress $1 ;;
+      *.7z)        7za x $1 ;;
+      *.xz)        xz -d $1 ;;
+      *)           echo "'$1' cannot be extracted via extract()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -189,7 +213,6 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 #Theme
-source "/home/$USER/.config/zsh/minimal/minimal.zsh"
-MNML_NORMAL_CHAR="‹"
+source "/home/$USER/.config/zsh/dracula/dracula.zsh-theme"
 
 fpath+=${ZDOTDIR:-~}/.zsh_functions

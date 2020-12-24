@@ -33,15 +33,9 @@ sanitize_path() {
 
 get_cover_path() {
     # album artist to match how beet organizes music library
-    ALBUMARTIST="$(cmus-remote -Q | grep -w albumartist | cut -d" " -f 3- | sanitize_path)"
-    ARTIST="$(echo $1 | sanitize_path)"
-    ALBUM="$(echo $2 | sanitize_path)"
-    PATH1="$HOME/Music/${ALBUMARTIST// /_}/${ALBUM// /_}/cover.jpg"
-    PATH2="$HOME/Music/$ARTIST/$ALBUM/cover.jpg"
-    if [ -f "$PATH1" ] ; then
-        echo "$PATH1"
-    else
-        echo "$PATH2"
+    path="$(cmus-remote -Q | grep -w file | cut -d" " -f 2- | rev | cut -d"/" -f 2- | rev)/cover.jpeg"
+    if [ -f "$path" ] ; then
+        echo "$path"
     fi
 }
 
