@@ -1,0 +1,8 @@
+#!/bin/sh
+
+[ -z "$1" ] && echo "No file specified" && exit 1
+
+file=$(mktemp --suffix ".pdf")
+pandoc "$1" -o "$file"
+zathura "$file" ; rm -rf "$file"
+
