@@ -9,6 +9,16 @@
 # export LANGUAGE=en_US.UTF-8
 # export QT_QPA_PLATFORMTHEME="qt5ct"
 
+export EDITOR="/usr/bin/nvim"
+export SUDO_EDITOR="/usr/bin/nvim"
+export SUDO_ASKPASS="/usr/bin/dmenu_pass"
+export PAGER="less"
+export BROWSER="brave"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export QT_QPA_PLATFORMTHEME="qt5ct"
+
 HIST_STAMPS="dd/mm/yyyy"
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000000000
@@ -64,7 +74,8 @@ alias lofi="mpv 'https://www.youtube.com/watch?v=5qap5aO4i9A' --no-video"
 alias drag="dragon-drag-and-drop -x"
 alias dragt="dragon-drag-and-drop -x -t"
 alias dot='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
-alias mv='mv -i'
+alias mv='mv -iv'
+alias cp='cp -iv'
 
 # Git
 alias g="git"
@@ -77,7 +88,8 @@ alias gca="git commit -am"
 
 # Youtube-dl
 alias ymp="youtube-dl -if bestaudio --extract-audio --audio-format mp3 -o '%(playlist_index)s-%(title)s.%(ext)s'"
-alias yp="youtube-dl -io '%(playlist_index)s-%(title)s/%(title)s.%(ext)s' -i --sub-lang=en,tr"
+alias yp="youtube-dl -io '%(playlist_index)s-%(title)s.%(ext)s' -i"
+alias yps="youtube-dl -io '%(playlist_index)s-%(title)s/%(title)s.%(ext)s' -i --sub-lang=en,tr"
 alias y="youtube-dl"
 
 # nvim
@@ -164,7 +176,7 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-greeter
+# greeter
 
 
 # Plugins

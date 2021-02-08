@@ -15,6 +15,7 @@ set title "Show file name on title
 set backspace=indent,eol,start "Fix backspace key
 set encoding=UTF-8
 set termguicolors
+set lazyredraw
 if !has('nvim')
     " Better cryption
     set cryptmethod=blowfish
@@ -109,7 +110,7 @@ set undodir=/tmp
 augroup autowrite
     autocmd!
     autocmd InsertLeave *.tex write
-    autocmd InsertLeave *.md write
+    autocmd InsertLeave *.md if expand('%') !~ "note-" | write | endif 
 augroup END
 " }}}
 
@@ -134,3 +135,4 @@ augroup suckless
     autocmd BufWritePost /home/tozkoparan/git-clones/suckless/*/config.h !make && sudo -A make install
 augroup END
 " }}}
+
