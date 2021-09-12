@@ -1,10 +1,7 @@
-. $HOME/.profile
-
 export EDITOR="/usr/bin/nvim"
 export SUDO_EDITOR="/usr/bin/nvim"
-export SUDO_ASKPASS="/usr/bin/dmenu_pass"
 export PAGER="less"
-export BROWSER="chromium"
+export BROWSER="brave"
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
@@ -25,14 +22,6 @@ setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording en
 setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
 setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 setopt hist_ignore_space
-
-# Aliases
-# Configs
-alias i3config="nvim ~/dotfiles-scripts/dotfiles/i3"
-alias vimconfig="nvim ~/dotfiles-scripts/dotfiles/nvim"
-alias zshconfig="nvim ~/dotfiles-scripts/dotfiles/zshrc"
-alias ohmyzsh="nvim ~/.oh-my-zsh"
-alias resetZSHSource="source ~/.zshrc"
 
 # Some Commands
 alias ls="exa"
@@ -104,7 +93,7 @@ function conf() {nvim $(du -a ~/.config | awk '{print $2}' | sed '/\/.git\//d' |
 function mkc (){mkdir -v $1 && cd $1}
 
 
-export TERM='xterm-256color'
+export TERM='alacritty'
 
 PERL5LIB="/home/$USER/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/home/$USER/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
@@ -179,7 +168,7 @@ preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 # Plugins
 source "/home/$USER/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/home/$USER/.config/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-source "/home/$USER/.config/zsh/z/z.sh"
+source "/home/ahmedselimuzum/.config/zsh/zsh-z/zsh-z.plugin.zsh"
 
 # Setup extract alias
 x () {
@@ -204,20 +193,6 @@ x () {
   fi
 }
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/tozkoparan/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/tozkoparan/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/tozkoparan/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/tozkoparan/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 fpath+=${ZDOTDIR:-~}/.zsh_functions
 
