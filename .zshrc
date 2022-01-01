@@ -58,7 +58,7 @@ alias bgrep='batgrep'
 
 alias bos="cd $(mktemp -d)"
 
-alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias conf='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 alias g="git"
 alias gs="git status"
@@ -109,7 +109,7 @@ ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 
 source "/home/$USER/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "/home/$USER/.config/zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-source "/home/ahmedselimuzum/.config/zsh/zsh-z/zsh-z.plugin.zsh"
+source "/home/$USER/.config/zsh/zsh-z/zsh-z.plugin.zsh"
 
 # Setup extract alias
 x () {
@@ -127,7 +127,7 @@ x () {
       *.Z)         uncompress $1 ;;
       *.7z)        7za x $1 ;;
       *.xz)        xz -d $1 ;;
-      *)           echo "'$1' cannot be extracted via extract()" ;;
+      *)           echo "'$1' cannot be extracted via x()" ;;
     esac
   else
     echo "'$1' is not a valid file"
