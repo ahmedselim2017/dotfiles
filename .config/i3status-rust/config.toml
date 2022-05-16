@@ -1,14 +1,14 @@
 icons = "material-nf"
 
 [theme]
-name = "nord-dark"
+name = "native"
 
 [theme.overrides]
 separator = " "
 
 [[block]]
 block = "disk_space"
-path = "/"
+path = "/home"
 format = "{icon} {available}"
 unit = "GB"
 

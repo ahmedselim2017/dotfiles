@@ -32,6 +32,7 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec alacritty
+bindsym $mod+Shift+Return exec bash -c "/home/ahmedselimuzum/.local/bin/sss-spawnalacritty"
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -61,7 +62,7 @@ bindsym $mod+b split h
 bindsym $mod+v split v
 
 # Scratchpad
-exec --no-startup-id alacritty --class pythondrop
+exec --no-startup-id alacritty --class pythondrop -e python -m IPython
 for_window [instance="pythondrop"] floating enable
 for_window [instance="pythondrop"] resize set width 850 px
 for_window [instance="pythondrop"] resize set height 370 px
@@ -151,10 +152,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
+        bindsym h resize shrink width 5 px or 5 ppt
+        bindsym j resize grow height 5 px or 5 ppt
+        bindsym k resize shrink height 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -180,68 +181,72 @@ bar {
     bindsym button7 nop
     
     colors {
-        background #2f343f
-        statusline #d8dee8
-        separator #4b5262
+        background #15121C
+        statusline #DADAE8
+        separator #C3BAC6
 
         # colour of border, background, and text
-        focused_workspace       #2f343f #88c0d0 #2f343f
-        active_workspace        #2f343f #2f343f #d8dee8
-        inactive_workspace      #2f343f #2f343f #d8dee8
-        urgent_workspace        #2f343f #ebcb8b #2f343f
+        focused_workspace       #15121C #A4B9EF #1b1923
+        active_workspace        #15121C #aaaaaa #dadae8
+        inactive_workspace      #15121c #15121c #dadae8
+        urgent_workspace        #e38c8f #e38c8f #1b1923
     }
-
 
 }
 
 # Adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 5%+ && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 5%-  && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5  && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id amixer -q -D pulse sset Master toggle && $refresh_i3status
 
+# Media player controls
 bindsym KP_Begin exec playerctl play-pause
 bindsym KP_Right exec playerctl next
 bindsym KP_Left exec playerctl previous
-bindsym KP_Up exec --no-startup-id amixer -q -D pulse sset Master 5%+ && $refresh_i3status
-bindsym KP_Down exec --no-startup-id amixer -q -D pulse sset Master 5%- && $refresh_i3status
+bindsym KP_Up exec --no-startup-id pamixer -i 5 && $refresh_i3status
+bindsym KP_Down exec --no-startup-id pamixer -d 5 && $refresh_i3status
+
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPause exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 
 bindsym XF86MonBrightnessUp exec light -A 2
 bindsym XF86MonBrightnessDown exec light -U 2
+
+exec_always xwallpaper --zoom "$(fd -e png -e jpg . /home/ahmedselimuzum/Images/wallpapers | shuf | head -n1)" &
+exec --no-startup-id setxkbmap tr
+exec --no-startup-id redshift -l 41.0:28.58 &
+exec dunst &
 
 gaps inner 10
 default_border pixel 3
 
 # Colocs
-# Base colors
-set $base00 #1d2021
-# unfocused grey
-set $base01 #434343
-set $base02 #504945
-set $base03 #665c54
-set $base04 #bdae93
-set $base05 #d5c4a1
-set $base06 #ebdbb2
-set $base07 #fbf1c7
-set $base08 #fb4934
-set $base09 #fe8019
-set $base0A #fabd2f
-set $base0B #b8bb26
-#set $base0C #ffae57
-set $base0D #83a598
-set $base0E #d3869b
-# main color
-set $base0F #88c0d0
+set $black #15121C
+set $red #E38C8F
+set $green #B1E3AD
+set $yellow #EBDDAA
+set $blue #A4B9EF
+set $lblue #bee4ed
+set $magenta #C6AAE8
+set $pink #E5B4E2
+set $white #DADAE8
 
 # class                 border  bground text    indicator child_border
-client.focused          $base0F $base0D $base00 $base0F   $base0F
-# client.focused_inactive $base01 $base01 $base05 $base03   $base0F
-client.unfocused        $base01 $base00 $base05 $base01   $base01
-client.urgent           $base08 $base08 $base00 $base08   $base0F
-client.placeholder      $base00 $base00 $base05 $base00   $base0F
-client.background       $base0F
+client.focused          $black  $black  $blue $lblue $blue
+client.focused_inactive $black  $black  $white $lblue $black
+client.unfocused        #ff00ff #00ffff #00ffff $lblue $black
+client.urgent           #ff00ff #0099ff #ffaaff $lblue $red
+client.placeholder      #ff00ff #00fff0 #bbffff $lblue $green
 
-client.background       #F8F8F2
+client.background       #ff0000
 
 
+for_window [instance="steam_app_1182480"] floating enable
+for_window [instance="matplotlib"] floating enable
+for_window [instance="image"] fullscreen enable
+
+bindsym $mod+Shift+x exec --no-startup-id betterlockscreen --lock

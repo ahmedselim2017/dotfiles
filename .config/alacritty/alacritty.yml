@@ -9,7 +9,7 @@
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
 import:
- - /home/ahmedselimuzum/.config/alacritty/nord.yml
+ - /home/ahmedselimuzum/.config/alacritty/catppuccin.yml
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
@@ -311,7 +311,7 @@ font:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: .9
+window.opacity: .9
 
 #selection:
   # This string contains all characters that are used as separators for
