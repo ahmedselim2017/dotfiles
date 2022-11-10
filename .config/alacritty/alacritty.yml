@@ -61,7 +61,9 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  #decorations: full
+  decorations: none
+
+  opacity: 0.8
 
   # Startup Mode (changes require restart)
   #
@@ -122,7 +124,7 @@ font:
         family: Hack Nerd Font Mono
         style: Bold Italic
 
-    size: 7.5
+    size: 10
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -311,7 +313,7 @@ font:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-window.opacity: .9
+# opacity: .8
 
 #selection:
   # This string contains all characters that are used as separators for

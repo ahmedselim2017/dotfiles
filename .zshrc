@@ -8,7 +8,7 @@ export LANGUAGE=en_US.UTF-8
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export GPODDER_DOWNLOAD_DIR=/home/tozkoparan/mount/2/Medya/Auido/Podcasts
-export PATH="/home/ahmedselimuzum/.local/bin:$PATH"
+export PATH="$PATH:/home/ahmedselimuzum/.local/bin:/home/ahmedselimuzum/.cargo/bin"
 export TERM='alacritty'
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 
@@ -104,7 +104,7 @@ bindkey "^[[B" down-line-or-beginning-search # Down
 
 
 #Plugins
-source "/usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
+source "/home/$USER/.config/zsh/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
 ZVM_VI_INSERT_ESCAPE_BINDKEY=jk
 
 source "/home/$USER/.config/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
