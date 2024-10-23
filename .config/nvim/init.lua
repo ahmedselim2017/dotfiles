@@ -1,4 +1,3 @@
-require('plugins')
-require('plugin_settings')
-require('settings')
-require('mappings')
+require("ahmedselimuzum.settings")
+require("ahmedselimuzum.mappings")
+require("ahmedselimuzum.lazy")
