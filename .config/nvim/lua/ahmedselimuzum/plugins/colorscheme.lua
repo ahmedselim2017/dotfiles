@@ -9,7 +9,7 @@ return {
     integrations = {
       alpha = true,
       lightspeed = true,
-      mason = true,
+      -- mason = true,
       cmp = true,
       native_lsp = {
         enabled = true,

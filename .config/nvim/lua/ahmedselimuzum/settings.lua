@@ -37,3 +37,5 @@ vim.opt.history = 1000
 vim.opt.undolevels = 1000
 vim.opt.undofile = true
 vim.opt.undodir = "/tmp"
+
+vim.opt.wrap = false

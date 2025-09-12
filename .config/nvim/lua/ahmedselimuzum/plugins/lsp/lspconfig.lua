@@ -1,7 +1,13 @@
+vim.filetype.add({
+  extension = {
+    cuf = "fortran",
+  },
+})
+
 return {
   "neovim/nvim-lspconfig",
   dependencies = { "kevinhwang91/nvim-ufo", "kevinhwang91/promise-async" },
-  event = { "BufReadPre", "BufNewFile" },
+  event = { "BufRead", "BufNewFile" },
   config = function()
     local lspconfig = require("lspconfig")
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
@@ -11,6 +17,11 @@ return {
 
     local on_attach = function(client, bufnr)
       opts.buffer = bufnr
+
+      if client.name == 'ruff' then
+        -- Disable hover in favor of Pyright
+        client.server_capabilities.hoverProvider = false
+      end
 
       opts.desc = "Show LSP references"
       keymap.set("n", "<leader>gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
@@ -52,7 +63,13 @@ return {
       keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
     end
 
-    local capabilities = cmp_nvim_lsp.default_capabilities()
+    -- local capabilities = cmp_nvim_lsp.default_capabilities()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.foldingRange = {
+      dynamicRegistration = false,
+      lineFoldingOnly = true
+    }
+    require('ufo').setup()
 
     lspconfig["bashls"].setup({
       capabilities = capabilities,
@@ -69,10 +86,40 @@ return {
       on_attach = on_attach,
     })
 
+
+    lspconfig["ruff"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      -- init_options = {
+      --   settings = {
+      --     -- Ruff language server settings go here
+      --   }
+      -- }
+    })
+
+
     lspconfig["matlab_ls"].setup({
       capabilities = capabilities,
       on_attach = on_attach
     })
+
+    lspconfig["clangd"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach
+    })
+
+    lspconfig["fortls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      cmd = { "fortls", "--notify_init", "--hover_signature", "--hover_language=fortran", "--use_signature_help", '--incl_suffixes=.cuf' },
+      filetypes = { 'fortran', 'f90', 'f77', 'f03', 'f08', 'cuf' }, -- Add 'cuf' to filetypes
+    })
+
+    lspconfig["cmake"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach
+    })
+
 
     lspconfig["lua_ls"].setup({
       capabilities = capabilities,
@@ -105,6 +152,5 @@ return {
 
     vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
     vim.o.foldcolumn = '1'
-    require('ufo').setup()
   end
 }

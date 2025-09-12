@@ -19,7 +19,17 @@ return {
             ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
           }
         }
-      }
+      },
+      pickers = {
+        live_grep = {
+          additional_args = function()
+            return {
+              "-u",
+            }
+          end
+        },
+      },
+
     })
 
     telescope.load_extension("fzf");

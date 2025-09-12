@@ -10,7 +10,8 @@ return {
 
     mason.setup({})
     mason_lspconfig.setup({
-      automatic_installation = true
+      automatic_installation = true,
+      automatic_enable = false
     })
   end
 }

@@ -1,6 +1,6 @@
 return {
   "stevearc/conform.nvim",
-  event = { "BufWritePre" },
+  -- event = { "BufWritePre" },
   cmd = { "ConformInfo" },
   keys = {
     {
@@ -18,19 +18,31 @@ return {
     -- Define your formatters
     formatters_by_ft = {
       lua = { "luaformatter" },
-      python = { "yapf" },
       -- markdown = { "markdownlint" },
       sh = { "shfmt" },
       bash = { "shfmt" },
-      json = { "jq" }
+      json = { "cj" },
+      c = {"clang-format"},
+      fortran = {"fprettify"},
+      cmake = {"cmake_format"}
+
+
+
     },
     -- Set up format-on-save
-    format_on_save = { timeout_ms = 500, lsp_fallback = true },
+    -- format_on_save = { timeout_ms = 1000, lsp_fallback = true },
     -- Customize formatters
     formatters = {
       shfmt = {
         prepend_args = { "-i", "2" },
       },
+      fprettify = {
+        prepend_args = {"-i", "2"},
+      },
+      cj = {
+        command = "compact-json_pipe",
+        stdin = true
+      }
     },
   },
   init = function()

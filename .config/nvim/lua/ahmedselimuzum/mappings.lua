@@ -6,7 +6,10 @@ vim.g.maplocalleader = 'ç'
 -- General mappings
 vim.api.nvim_set_keymap('i', 'jk', '<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('i', 'kj', '<Esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('c', 'Q', 'quitall!', { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap('c', 'Q', 'quitall!', { noremap = true, silent = false })
+vim.keymap.set('c', 'Q', function()
+    return vim.fn.getcmdtype() == ':' and 'quitall!' or 'Q'
+end, { expr = true })
 
 -- hlsearch
 vim.api.nvim_set_keymap('n', '<Leader><Esc>', ':set hlsearch!<CR>', { noremap = true, silent = true })
