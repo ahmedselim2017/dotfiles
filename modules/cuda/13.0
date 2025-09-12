@@ -1,0 +1,20 @@
+#%Module1.0
+##
+## cuda 13.0 modulefile
+##
+
+family CUDA
+
+module-whatis	"Name: CUDA"
+module-whatis	"Version: 13.0"
+
+if { [is-loaded cuda/13.0 ] } {
+module unload cuda/13.0
+}
+
+set prefix /usr/local/cuda-13.0
+
+setenv CUDA_HOME $prefix
+
+prepend-path PATH $prefix/bin
+prepend-path LD_LIBRARY_PATH $prefix/lib64

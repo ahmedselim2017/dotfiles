@@ -3,7 +3,7 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
   exec tmux
 fi
 
-export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/tools/bin/:$HOME/software/pdb-tools/pdbtools:/usr/local/cuda/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/tools/bin/:$HOME/software/pdb-tools/pdbtools"
 
 export EDITOR="/usr/bin/nvim"
 export SUDO_EDITOR="/usr/bin/nvim"
@@ -195,3 +195,6 @@ zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 bindkey "^[[A" up-line-or-beginning-search # Up
 bindkey "^[[B" down-line-or-beginning-search # Down
+
+source /usr/share/modules/init/zsh
+export MODULEPATH="${HOME}/dotfiles/modules:${MODULEPATH}"
