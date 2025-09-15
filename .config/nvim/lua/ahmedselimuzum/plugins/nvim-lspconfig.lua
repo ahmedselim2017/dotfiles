@@ -6,6 +6,7 @@ return {
 	dependencies = {
 		{ "hrsh7th/cmp-nvim-lsp", commit = "99290b3" },
 		"hrsh7th/nvim-cmp",
+    "kevinhwang91/nvim-ufo"
 	},
 
 	config = function()
