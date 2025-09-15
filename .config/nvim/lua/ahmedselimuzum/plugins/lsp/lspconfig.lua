@@ -18,10 +18,10 @@ return {
     local on_attach = function(client, bufnr)
       opts.buffer = bufnr
 
-      if client.name == 'ruff' then
-        -- Disable hover in favor of Pyright
-        client.server_capabilities.hoverProvider = false
-      end
+      -- if client.name == 'ruff' then
+      --   -- Disable hover in favor of Pyright
+      --   client.server_capabilities.hoverProvider = false
+      -- end
 
       opts.desc = "Show LSP references"
       keymap.set("n", "<leader>gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
@@ -87,17 +87,6 @@ return {
     })
 
 
-    lspconfig["ruff"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      -- init_options = {
-      --   settings = {
-      --     -- Ruff language server settings go here
-      --   }
-      -- }
-    })
-
-
     lspconfig["matlab_ls"].setup({
       capabilities = capabilities,
       on_attach = on_attach
@@ -121,25 +110,25 @@ return {
     })
 
 
-    lspconfig["lua_ls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = { -- custom settings for lua
-        Lua = {
-          -- make the language server recognize "vim" global
-          diagnostics = {
-            globals = { "vim" },
-          },
-          workspace = {
-            -- make language server aware of runtime files
-            library = {
-              [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-              [vim.fn.stdpath("config") .. "/lua"] = true,
-            },
-          },
-        },
-      },
-    })
+    -- lspconfig["lua_ls"].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    --   settings = { -- custom settings for lua
+    --     Lua = {
+    --       -- make the language server recognize "vim" global
+    --       diagnostics = {
+    --         globals = { "vim" },
+    --       },
+    --       workspace = {
+    --         -- make language server aware of runtime files
+    --         library = {
+    --           [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+    --           [vim.fn.stdpath("config") .. "/lua"] = true,
+    --         },
+    --       },
+    --     },
+    --   },
+    -- })
 
     vim.o.foldcolumn = '1' -- '0' is not bad
     vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
