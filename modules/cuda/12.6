@@ -16,5 +16,9 @@ set prefix /usr/local/cuda-12.6
 
 setenv CUDA_HOME $prefix
 
+setenv CC "/usr/bin/gcc-12"
+setenv CXX "/usr/bin/g++-12"
+setenv F90 "/usr/bin/gfortran-12"
+
 prepend-path PATH $prefix/bin
 prepend-path LD_LIBRARY_PATH $prefix/lib64

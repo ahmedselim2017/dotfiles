@@ -28,9 +28,7 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-vim.opt.fillchars = "vert:|"
-vim.opt.splitright = false
-vim.opt.splitbelow = true
+vim.o.fillchars = "vert:│"
 
 -- History and undo
 vim.opt.history = 1000
